@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="YPlayer.MainPage"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:model="clr-namespace:YPlayer.Models"
+             xmlns:viewModel="clr-namespace:YPlayer.ViewModels"
+             x:DataType="viewModel:MainPageViewModel"
+             BackgroundColor="{StaticResource Secondary}">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="{StaticResource Tertiary}"/>
+    </ContentPage.Behaviors>
+
+    <Grid RowDefinitions="60, *, 80" Padding="0" Margin="0">
+        
+        <!-- Custom Toolbar -->
+        <Grid ColumnDefinitions="*, 60">
+            <BoxView Color="{StaticResource Tertiary}" Grid.ColumnSpan="2"/>
+            <Image Source="logo_main_page.png" HorizontalOptions="StartAndExpand" Margin="10"/>
+            <ImageButton Source="search_icon_white.png" Grid.Column="1" Margin="15"/>
+        </Grid>
+
+        <!-- Videos list -->
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Videos}" Margin="0, 10">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:Video">
+                    <Grid ColumnDefinitions="*" RowDefinitions="*"  Margin="10" >
+                        <Frame BackgroundColor="Transparent" Padding="0" IsClippedToBounds="True" BorderColor="White" >
+                            <VerticalStackLayout>
+                                <Image Source="{Binding ThumbnailMax}" Aspect="AspectFill"/>
+                                <Grid ColumnDefinitions="60, *" Margin="10" ColumnSpacing="10">
+                                    <Frame BackgroundColor="Transparent" BorderColor="Transparent" IsClippedToBounds="True" Padding="0" CornerRadius="60">
+                                        <Image Source="{Binding ChannelThumbnail}" Aspect="AspectFill"/>
+                                    </Frame>
+                                    <Label Style="{StaticResource HeaderSmall}" Text="{Binding Title}" Grid.Column="1"/>
+                                </Grid>
+                            </VerticalStackLayout>
+                        </Frame>
+                        <Frame BackgroundColor="Transparent" Padding="0" IsClippedToBounds="True" BorderColor="White"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        
+
+        <!-- Temp Load Button -->
+        <Button Grid.Row="2" Margin="20" Text="Load Videos" IsEnabled="{Binding IsNotBusy}" Command="{Binding LoadTrendingVideosCommand}"/>
+    </Grid>
+
+</ContentPage>
